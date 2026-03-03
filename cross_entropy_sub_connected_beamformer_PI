@@ -1,0 +1,11 @@
+function [FBB_CE_opt,FRF_CE_opt] = cross_entropy_sub2(Fopt,K,T,B,NS,NRF,NT)
+    sub = NT/NRF;
+    FRF_CE_opt = zeros(NT,NRF);
+    FBB_CE_opt = zeros(NRF,NS);
+    for i = 1:NRF
+        [FBB_sub,FRF_sub] = cross_entropy_sub(Fopt(sub*(i-1)+1:sub*i,:),K,T,B,NS,1,sub);
+        FBB_CE_opt(i,:) = FBB_sub;
+        FRF_CE_opt(sub*(i-1)+1:sub*i,i) = FRF_sub;
+    end
+       FBB_CE_opt = sqrt(NS)*FBB_CE_opt/(norm(FRF_CE_opt*FBB_CE_opt,'fro'));
+end
